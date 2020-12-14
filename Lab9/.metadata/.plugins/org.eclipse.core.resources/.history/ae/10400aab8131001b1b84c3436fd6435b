@@ -1,0 +1,39 @@
+package Teme;
+
+import javax.swing.text.Element;
+import javax.xml.parsers.DocumentBuilder;
+
+public class ex {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		try{
+			DocumentBuilder factory=DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder=factory.newDocumentBuilder();
+			Document document=builder.parse("D:\\Facultate\\LaboratorJava\\Lab9\\Lab9\\src\\optionale.xml");
+			Element elt=document.getDocumentElement(); //optionale
+			Node n1,n2,n3;
+			System.out.println("Elementul radacina este: "+elt.getTagName());
+			System.out.println("Cursurile optionale sunt:");
+			n1=elt.getFirstChild();
+			while(n1!=null){
+			n2=n1.getFirstChild();
+			while(n2!=null){
+			if (n2.getNodeName().equals("nume")){
+			n3=n2.getFirstChild();
+			while(n3!=null){
+			if (n3.getNodeType()==Node.TEXT_NODE)
+			System.out.println(n3.getNodeValue().trim());
+			n3=n3.getNextSibling();
+			}
+			}
+			n2=n2.getNextSibling();
+			}
+			n1=n1.getNextSibling();
+			}
+			}catch(Exception e){
+			System.out.println(e.toString());
+			} 
+	}
+
+}

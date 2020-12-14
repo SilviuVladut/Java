@@ -1,0 +1,56 @@
+package Tema;
+
+import java.io.IOException;
+import java.util.Scanner;
+
+class Exceptii extends Exception {
+	Exceptii(String s){
+		super(s);
+	}
+}
+
+class cls {
+	
+	public static void fctie(float b) throws Exceptii {
+		if(b==0) throw new Exceptii("Impartitorul trebuie sa fie diferit de 0");		
+	}
+	public static void fctie2(float a ,float b) throws Exceptii {
+		
+	}
+}
+
+public class Pb2 {
+
+	public static float imp(float a, float b) {
+		Scanner keyboard = new Scanner(System.in);
+		System.out.println("Primul nr: ");
+		a = keyboard.nextFloat();
+		System.out.println("Al doilea nr: ");
+		b = keyboard.nextFloat();
+		float c=a/b;
+		return c;
+		//System.out.println("a/b="+c);
+
+	}
+	
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		
+	
+		try {
+			imp(a,b);
+			cls.fctie(b);
+			System.out.println("a/b="+c);
+		}
+		catch(Exceptii e) {
+			System.out.println(e);
+			System.out.println("Primul nr: ");
+			a = keyboard.nextFloat();
+			System.out.println("Al doilea nr: ");
+			b = keyboard.nextFloat();
+			c=a/b;
+			System.out.println("a/b="+c);
+		}
+	} 
+	}
+

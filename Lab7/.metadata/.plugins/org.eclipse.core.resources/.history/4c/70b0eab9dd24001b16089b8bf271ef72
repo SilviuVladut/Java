@@ -1,0 +1,83 @@
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+
+public class Pb3 extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField txtFilm;
+	private JTextField txtActori;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Pb3 frame = new Pb3();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Pb3() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Film:");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel.setBounds(10, 16, 99, 25);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblActori = new JLabel("Actori:");
+		lblActori.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblActori.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblActori.setBounds(10, 51, 99, 25);
+		contentPane.add(lblActori);
+		
+		txtFilm = new JTextField();
+		txtFilm.setFont(new Font("Tahoma", Font.BOLD, 13));
+		txtFilm.setBounds(119, 18, 177, 25);
+		contentPane.add(txtFilm);
+		txtFilm.setColumns(10);
+		
+		txtActori = new JTextField();
+		txtActori.setFont(new Font("Tahoma", Font.BOLD, 13));
+		txtActori.setColumns(10);
+		txtActori.setBounds(119, 51, 177, 25);
+		contentPane.add(txtActori);
+		
+		JLabel lblAnLansare = new JLabel("An lansare:");
+		lblAnLansare.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblAnLansare.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblAnLansare.setBounds(10, 86, 99, 25);
+		contentPane.add(lblAnLansare);
+		
+		JSpinner spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(2015, 2015, 2020, 1));
+		spinner.setFont(new Font("Tahoma", Font.BOLD, 13));
+		spinner.setBounds(119, 86, 91, 20);
+		contentPane.add(spinner);
+	}
+}

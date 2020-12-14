@@ -1,0 +1,204 @@
+package Teme;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.Timer;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+import javax.swing.JInternalFrame;
+import java.awt.Font;
+
+
+public class Problema extends JFrame  {
+	DefaultTreeModel dtModel=null;
+	private JPanel contentPane;
+	
+	public void XmlJTree(String filePath){
+        if(filePath!=null)
+        setPath(filePath);
+    }
+
+    public void setPath(String filePath){
+        Node root = null;
+        /*
+            Parse the xml file
+        */
+        try {
+            DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(filePath);
+            root = (Node) doc.getDocumentElement();
+        } catch (IOException | ParserConfigurationException | SAXException ex) {
+            JOptionPane.showMessageDialog(null,"Can't parse file",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        /*
+            if any result set the appropriate model to the jTree
+        */
+        if(root!=null){
+            dtModel= new DefaultTreeModel(builtTreeNode(root));
+            this.setModel(dtModel);
+        }
+    }
+    private DefaultMutableTreeNode builtTreeNode(Node root){
+        DefaultMutableTreeNode dmtNode;
+
+        dmtNode = new DefaultMutableTreeNode(root.getNodeName());
+            NodeList nodeList = root.getChildNodes();
+            for (int count = 0; count < nodeList.getLength(); count++) {
+                Node tempNode = nodeList.item(count);
+                // make sure it's element node.
+                if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
+                    if (tempNode.hasChildNodes()) {
+                        // loop again if has child nodes
+                        dmtNode.add(builtTreeNode(tempNode));
+                    }
+                }
+            }
+        return dmtNode;
+    }
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Problema frame = new Problema();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}); 
+	}
+	
+	/**
+	 * Create the frame.
+	 */
+	public Problema() {
+		setTitle("Procesare XML");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		getContentPane().setLayout(null);
+		
+		XmlJTree myTree = new XmlJTree(null);
+		getContentPane().add(new JScrollPane(myTree));
+		myTree.setBounds(10, 58, 416, 195);
+		getContentPane().add(myTree);
+		DefaultTreeModel model = (DefaultTreeModel) myTree.getModel();
+	    DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+	    root.removeAllChildren();
+	    model.reload();
+	    model.setRoot(null);
+		
+	    JButton btnNewButton = new JButton("Open XML");
+	    btnNewButton.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent arg0) {
+	    		JFileChooser chooser = new JFileChooser("D:\\Facultate\\LaboratorJava\\Lab9\\Lab9");
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                        "XML file", "xml");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showOpenDialog(null);
+                if(returnVal == JFileChooser.APPROVE_OPTION) {
+                    myTree.setPath(chooser.getSelectedFile().getAbsolutePath());
+                }
+	    	}
+	    });
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton.setBounds(10, 20, 116, 30);
+		getContentPane().add(btnNewButton);
+		
+		//functia de jos curata Tree-ul sterge tot din el
+		//DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+       // DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+       // root.removeAllChildren();
+       // model.reload();
+       // model.setRoot(null);
+        //JScrollPane jScroll = new JScrollPane();
+       // jScroll.getViewport().add(tree);
+	/*	
+		JLabel lblOra = new JLabel("HH:mm:ss");
+		lblOra.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblOra.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOra.setBounds(311, 30, 81, 20);
+		contentPane.add(lblOra);
+		
+		JButton btnOpenXML = new JButton("Open XML");
+		btnOpenXML.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser j = new JFileChooser("D:\\Facultate\\LaboratorJava\\Lab9\\Lab9"); 
+				//filtru pt .xml
+				j.setDialogTitle("Select aa XML Doc");
+		        j.setAcceptAllFileFilterUsed(false);
+		        FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Documents", "xml");
+		        j.addChoosableFileFilter(filter);
+				// Open the save dialog 
+		        int returnValue = j.showOpenDialog(null);
+		        if (returnValue == JFileChooser.APPROVE_OPTION) { //daca dam open pe fisier il adaugam in tree
+		            System.out.println("Adaugam:"+j.getSelectedFile().getPath());
+		            
+
+		        }
+				
+			}
+		});
+		btnOpenXML.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnOpenXML.setBounds(10, 27, 110, 25);
+		contentPane.add(btnOpenXML);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 60, 416, 193);
+		contentPane.add(scrollPane);
+		scrollPane.getViewport().add(tree);
+		
+		
+		final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	    int interval = 1000; // 1000 ms
+
+	    new Timer(interval, new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            Calendar now = Calendar.getInstance();
+	            lblOra.setText(dateFormat.format(now.getTime()));
+	        }
+	    }).start();
+	*/
+	}
+}

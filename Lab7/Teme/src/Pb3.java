@@ -1,0 +1,205 @@
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JTextPane;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.JCheckBox;
+import javax.swing.JButton;
+import javax.swing.JScrollBar;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.util.Vector;
+import java.awt.event.ActionEvent;
+
+
+public class Pb3 extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField txtFilm;
+	private JTextField txtActori;
+	private JTable table;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Pb3 frame = new Pb3();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+
+	public Pb3() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 705, 446);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Film:");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel.setBounds(36, 33, 80, 29);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblActori = new JLabel("Actori:");
+		lblActori.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblActori.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblActori.setBounds(36, 72, 80, 29);
+		contentPane.add(lblActori);
+		
+		txtFilm = new JTextField();
+		txtFilm.setBounds(136, 39, 155, 22);
+		contentPane.add(txtFilm);
+		txtFilm.setColumns(10);
+		
+		txtActori = new JTextField();
+		txtActori.setColumns(10);
+		txtActori.setBounds(136, 78, 155, 22);
+		contentPane.add(txtActori);
+		
+		JLabel lblAnLansare = new JLabel("An lansare:");
+		lblAnLansare.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblAnLansare.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblAnLansare.setBounds(10, 111, 106, 29);
+		contentPane.add(lblAnLansare);
+		
+		JSpinner spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(2015, 2015, 2020, 1));
+		spinner.setBounds(136, 120, 98, 22);
+		contentPane.add(spinner);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "Genuri:", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBounds(342, 39, 339, 101);
+		contentPane.add(panel);
+		
+		JCheckBox chckbxComedie = new JCheckBox("Comedie");
+		chckbxComedie.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel.add(chckbxComedie);
+		
+		JCheckBox chckbxDrama = new JCheckBox("Drama");
+		chckbxDrama.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel.add(chckbxDrama);
+		
+		JCheckBox chckbxIstoric = new JCheckBox("Istoric");
+		chckbxIstoric.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel.add(chckbxIstoric);
+		
+		JCheckBox chckbxRomantic = new JCheckBox("Romantic");
+		chckbxRomantic.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel.add(chckbxRomantic);
+		
+		JCheckBox chckbxActiune = new JCheckBox("Actiune");
+		chckbxActiune.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panel.add(chckbxActiune);
+				
+		JButton btnAdauga = new JButton("Adauga");
+		btnAdauga.addActionListener(new ActionListener() {
+			int lin=0;
+			public void actionPerformed(ActionEvent e) {
+			    int col=0;
+				//lin=0; - am declarat-o globala ca sa ramana valoare salvata
+				String film = txtFilm.getText();
+				table.setValueAt(film, lin, col);
+				col++;
+				String actori = txtActori.getText();
+				table.setValueAt(actori, lin, col);
+				col++;
+				String an_lansare = spinner.getValue().toString();
+				table.setValueAt(an_lansare, lin, col);
+				col++;
+				String text="";
+				if (chckbxComedie.isSelected())
+				text+=chckbxComedie.getText()+" ";
+				if (chckbxDrama.isSelected())
+				text+=chckbxDrama.getText()+" ";
+				if (chckbxIstoric.isSelected())
+				text+=chckbxIstoric.getText()+" ";
+				if (chckbxRomantic.isSelected())
+				text+=chckbxRomantic.getText()+" ";
+				if (chckbxActiune.isSelected())
+					text+=chckbxActiune.getText()+" ";
+				
+				table.setValueAt(text, lin, col);
+				lin++;
+			}
+		});
+		btnAdauga.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnAdauga.setBounds(31, 173, 85, 44);
+		contentPane.add(btnAdauga);
+		
+		JButton btnSterge = new JButton("Sterge");
+		btnSterge.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			int[] rows = table.getSelectedRows();
+			for(int i=0;i<rows.length;i++)
+			{
+			model.removeRow(rows[i]-i);
+	    	}
+			
+			}
+		});
+		btnSterge.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnSterge.setBounds(31, 237, 85, 44);
+		contentPane.add(btnSterge);
+		
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(136, 173, 545, 226);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+			},
+			new String[] {
+				"Film:", "Actori:", "An lansare:", "Genuri:"
+			}
+		));
+		table.getColumnModel().getColumn(3).setPreferredWidth(180);
+		
+	}
+}

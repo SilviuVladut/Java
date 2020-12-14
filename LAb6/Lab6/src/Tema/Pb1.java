@@ -1,0 +1,49 @@
+package Tema;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+
+
+class OExceptie extends Exception{
+	OExceptie(String s){
+		super(s);
+		
+	}
+}
+
+
+class OClasa {
+	public static void oFunctie(int a,int b) throws OExceptie{
+		if(a>=b) throw new OExceptie("Primul nr trebuie sa fie mai mic ca al doilea!");
+		
+	}
+}
+
+
+
+public class Pb1 {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		int a=0,b=0;
+		try {
+			Scanner keyboard = new Scanner(System.in);
+			System.out.println("Primul nr: ");
+			a = keyboard.nextInt();
+			System.out.println("Al doilea nr: ");
+			b = keyboard.nextInt();
+			OClasa.oFunctie(a,b);
+			FileWriter myWriter = new FileWriter("out.txt");
+		     myWriter.write("a= "+a+" b="+b+"\n");
+		     myWriter.close();
+		     System.out.println("Fisier scris");
+			}
+		catch(OExceptie e) {
+			System.out.println(e);
+			
+		}
+	}
+
+}

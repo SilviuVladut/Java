@@ -1,0 +1,154 @@
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.Box;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
+import javax.swing.JCheckBox;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+
+public class Pb3 extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField txtFilm;
+	private JTextField txtActori;
+	private JTable table;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Pb3 frame = new Pb3();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Pb3() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 636, 436);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JLabel lblNewLabel = new JLabel("Film:");
+		lblNewLabel.setBounds(10, 16, 99, 25);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		JLabel lblActori = new JLabel("Actori:");
+		lblActori.setBounds(10, 51, 99, 25);
+		lblActori.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblActori.setFont(new Font("Tahoma", Font.BOLD, 15));
+		
+		txtFilm = new JTextField();
+		txtFilm.setBounds(119, 18, 177, 25);
+		txtFilm.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtFilm.setColumns(10);
+		
+		txtActori = new JTextField();
+		txtActori.setBounds(119, 51, 177, 25);
+		txtActori.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtActori.setColumns(10);
+		
+		JLabel lblAnLansare = new JLabel("An lansare:");
+		lblAnLansare.setBounds(10, 86, 99, 25);
+		lblAnLansare.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblAnLansare.setFont(new Font("Tahoma", Font.BOLD, 15));
+		
+		JSpinner spinner = new JSpinner();
+		spinner.setBounds(119, 86, 91, 20);
+		spinner.setModel(new SpinnerNumberModel(2015, 2015, 2020, 1));
+		spinner.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		contentPane.setLayout(null);
+		contentPane.add(lblNewLabel);
+		contentPane.add(lblActori);
+		contentPane.add(txtFilm);
+		contentPane.add(txtActori);
+		contentPane.add(lblAnLansare);
+		contentPane.add(spinner);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(326, 16, 274, 95);
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Genuri", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		contentPane.add(panel);
+		
+		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("comedie");
+		chckbxNewCheckBox_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		panel.add(chckbxNewCheckBox_1);
+		
+		JCheckBox chckbxNewCheckBox_2 = new JCheckBox("drama");
+		chckbxNewCheckBox_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		panel.add(chckbxNewCheckBox_2);
+		
+		JCheckBox chckbxNewCheckBox_3 = new JCheckBox("istoric");
+		chckbxNewCheckBox_3.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		panel.add(chckbxNewCheckBox_3);
+		
+		JCheckBox chckbxNewCheckBox_4 = new JCheckBox("actiune");
+		chckbxNewCheckBox_4.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		panel.add(chckbxNewCheckBox_4);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("romantic");
+		chckbxNewCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		panel.add(chckbxNewCheckBox);
+		
+		JButton btnAdauga = new JButton("Adauga");
+		btnAdauga.setBounds(119, 138, 133, 41);
+		btnAdauga.setFont(new Font("Tahoma", Font.BOLD, 13));
+		contentPane.add(btnAdauga);
+		
+		JButton btnSterge = new JButton("Sterge");
+		btnSterge.setBounds(310, 138, 133, 41);
+		btnSterge.setFont(new Font("Tahoma", Font.BOLD, 13));
+		contentPane.add(btnSterge);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(25, 199, 567, 187);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+			},
+			new String[] {
+				"Film", "Actori", "An lansare", "Genuri"
+			}
+		));
+	}
+}

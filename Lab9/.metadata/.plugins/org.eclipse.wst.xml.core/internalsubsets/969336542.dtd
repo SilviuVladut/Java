@@ -1,0 +1,6 @@
+
+<!ELEMENT studenti (student)+>
+<!ELEMENT student (nume,an,grupa)>
+<!ELEMENT nume (#PCDATA)>
+<!ELEMENT an (#PCDATA)>
+<!ELEMENT grupa (#PCDATA)>

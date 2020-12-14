@@ -1,0 +1,387 @@
+package teme;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import sun.security.util.Length;
+
+import javax.swing.JToolBar;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.Panel;
+
+
+class Persoane {
+	private String nume;
+	private int id, varsta;
+	public Persoane(Integer id,String nume,Integer varsta) {
+		this.id=id;
+		this.nume=nume;
+		this.varsta=varsta;
+	}
+	@Override
+	public String toString() {
+		return "Persoane [id=" + id + ", nume=" + nume + ", varsta=" + varsta + "]";
+	}
+	public String getNume() {
+		return nume;
+	}
+	public int getId() {
+		return id;
+	}
+	public int getVarsta() {
+		return varsta;
+	}
+}
+
+public class Problema extends JFrame {
+	
+	private static List<Persoane> persoane= new ArrayList<Persoane>();
+	private JPanel contentPane;
+	private JTextField txtELEMENTE;
+	private JTextField txtID;
+	private JTextField txtNUME;
+	private JTextField txtVARSTA;
+	private int persCurenta;
+	private JTextField inputID;
+	private JTextField inputNUME;
+	private JTextField inputVARSTA;
+	/**
+	 * Launch the application.
+	 * @return 
+	 * @return 
+	 * @return 
+	 * @throws ClassNotFoundException 
+	 * @throws SQLException 
+	 */
+
+	
+	
+	
+	public static void getPersoane()
+	{
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+			Connection con=DriverManager.getConnection("jdbc:mysql://192.168.137.1/patrut","patrut","daniela");  
+			//here sonoo is database name, root is username and password  
+			Statement stmt=con.createStatement();  
+			ResultSet rs=stmt.executeQuery("select * from lab8");
+			persoane.clear();
+			while(rs.next())  
+				persoane.add(new Persoana(rs.getInt(1),rs.getString(2),rs.getInt(3)));  
+			con.close();  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void DeletePersoane(int index)
+	{
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+			Connection con=DriverManager.getConnection("jdbc:mysql://192.168.137.1/patrut","patrut","daniela");  
+			//here sonoo is database name, root is username and password  
+			Statement stmt=con.createStatement();
+			stmt.executeUpdate("DELETE from lab8 where ID="+persoane.get(index-1).getId());
+			ResultSet rs=stmt.executeQuery("Select * from lab8");
+			persoane.clear();
+			while(rs.next())  
+				persoane.add(new Persoana(rs.getInt(1),rs.getString(2),rs.getInt(3)));  
+			con.close();  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void UpdatePersoane(String id,String nume,String varsta)
+	{
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+			Connection con=DriverManager.getConnection("jdbc:mysql://192.168.137.1/patrut","patrut","daniela");  
+			//here sonoo is database name, root is username and password  
+			Statement stmt=con.createStatement();
+			stmt.executeUpdate("UPDATE `lab8` SET `Nume`='"+nume+"',`Varsity`="+varsta+" WHERE ID="+id+";");
+			ResultSet rs=stmt.executeQuery("Select * from lab8");
+			persoane.clear();
+			while(rs.next())  
+				persoane.add(new Persoana(rs.getInt(1),rs.getString(2),rs.getInt(3)));  
+			con.close();  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void AddPersoane(String id,String nume,String varsta)
+	{
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+			Connection con=DriverManager.getConnection("jdbc:mysql://192.168.137.1/patrut","patrut","daniela");  
+			//here sonoo is database name, root is username and password  
+			Statement stmt=con.createStatement();
+			stmt.executeUpdate("INSERT INTO lab8 (`ID`, `Nume`, `Varsity`) VALUES ("+id+",'"+nume+"',"+varsta+")");
+			ResultSet rs=stmt.executeQuery("Select * from lab8");
+			persoane.clear();
+			while(rs.next())  
+				persoane.add(new Persoana(rs.getInt(1),rs.getString(2),rs.getInt(3)));  
+			con.close();  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	
+	
+	
+    
+public static void main(String[] args) throws SQLException  {	
+	
+	
+	
+	
+	    EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					
+					Problema frame = new Problema();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+
+	/**
+	 * Create the frame.
+	 * @throws SQLException 
+	 */
+	public Problema() throws SQLException {
+		
+		Persoane p;
+		setTitle("Aplicatie MYSQL");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 460, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JToolBar toolBar = new JToolBar();
+		toolBar.setBounds(20, 10, 416, 35);
+		contentPane.add(toolBar);
+		
+		txtELEMENTE = new JTextField();
+		toolBar.add(txtELEMENTE);
+		txtELEMENTE.setHorizontalAlignment(SwingConstants.LEFT);
+		txtELEMENTE.setColumns(10);
+		txtELEMENTE.setText("x/ " + persoane.size());
+		
+		Icon icon = new ImageIcon("D:\\Facultate\\LaboratorJava\\lab8\\Lab8\\Imagini\\MoveFirst.png");
+		final JButton btnPrimaInreg = new JButton(icon);
+		btnPrimaInreg.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				persCurenta = 0;
+				txtELEMENTE.setText(persoane.get(persCurenta).getId()+"/"+ persoane.size());
+				txtID.setText(""+persoane.get(persCurenta).getId());
+				txtNUME.setText(""+persoane.get(persCurenta).getNume());
+				txtVARSTA.setText(""+persoane.get(persCurenta).getVarsta());
+			}
+		});
+		toolBar.add(btnPrimaInreg);
+		
+		Icon icon2 = new ImageIcon("D:\\Facultate\\LaboratorJava\\lab8\\Lab8\\Imagini\\MovePrevious.png");
+		final JButton btnInapoi = new JButton(icon2);
+		btnInapoi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				persCurenta--;
+				if(persCurenta<0)
+				{
+					persCurenta = 0;
+				}
+				
+				txtELEMENTE.setText(persoane.get(persCurenta).getId()+"/"+ persoane.size());
+				txtID.setText(""+persoane.get(persCurenta).getId());
+				txtNUME.setText(""+persoane.get(persCurenta).getNume());
+				txtVARSTA.setText(""+persoane.get(persCurenta).getVarsta());
+			}
+		});
+		toolBar.add(btnInapoi);
+		
+		
+		
+		Icon icon3 = new ImageIcon("D:\\Facultate\\LaboratorJava\\lab8\\Lab8\\Imagini\\MoveNext.png");
+		JButton btnInainte = new JButton(icon3);
+		btnInainte.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			persCurenta++;
+			txtELEMENTE.setText(persoane.get(persCurenta).getId()+"/"+ persoane.size());
+			txtID.setText(""+persoane.get(persCurenta).getId());
+			txtNUME.setText(""+persoane.get(persCurenta).getNume());
+			txtVARSTA.setText(""+persoane.get(persCurenta).getVarsta());
+		}
+		});
+		toolBar.add(btnInainte);
+		
+		Icon icon4 = new ImageIcon("D:\\Facultate\\LaboratorJava\\lab8\\Lab8\\Imagini\\MoveLast.png");
+		JButton btnUltimul = new JButton(icon4);
+		btnUltimul.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				persCurenta = persoane.size();
+				txtELEMENTE.setText(persoane.get(persCurenta-1).getId()+"/"+ persoane.size());
+				txtID.setText(""+persoane.get(persCurenta-1).getId());
+				txtNUME.setText(""+persoane.get(persCurenta-1).getNume());
+				txtVARSTA.setText(""+persoane.get(persCurenta-1).getVarsta());
+			}
+		});
+		toolBar.add(btnUltimul);
+		
+		final Panel panel = new Panel();
+		panel.setBounds(81, 53, 239, 152);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("ID:");
+		lblNewLabel_1.setBounds(36, 25, 24, 19);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		panel.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("Nume:");
+		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_1_1.setBounds(10, 49, 50, 19);
+		panel.add(lblNewLabel_1_1);
+		
+		JLabel lblNewLabel_1_1_1 = new JLabel("Varsta:");
+		lblNewLabel_1_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_1_1_1.setBounds(0, 78, 60, 19);
+		panel.add(lblNewLabel_1_1_1);
+		
+		inputID = new JTextField();
+		inputID.setBounds(70, 27, 96, 19);
+		panel.add(inputID);
+		inputID.setColumns(10);
+		
+		inputNUME = new JTextField();
+		inputNUME.setColumns(10);
+		inputNUME.setBounds(70, 51, 96, 19);
+		panel.add(inputNUME);
+		
+		inputVARSTA = new JTextField();
+		inputVARSTA.setColumns(10);
+		inputVARSTA.setBounds(70, 80, 96, 19);
+		panel.add(inputVARSTA);
+		
+		JButton addBTN = new JButton("Adauga");
+		addBTN.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+			}
+		});
+		addBTN.setBounds(81, 121, 85, 21);
+		panel.add(addBTN);
+		panel.setVisible(false);
+		
+		Icon icon5 = new ImageIcon("D:\\Facultate\\LaboratorJava\\lab8\\Lab8\\Imagini\\Add.png");
+		JButton btnAdauga = new JButton(icon5);
+		btnAdauga.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//panel.setVisible(true);
+			}
+		});
+		toolBar.add(btnAdauga);
+		
+		Icon icon6 = new ImageIcon("D:\\Facultate\\LaboratorJava\\lab8\\Lab8\\Imagini\\Edit.png");
+		JButton btnEditare = new JButton(icon6);
+		toolBar.add(btnEditare);
+		
+		Icon icon7 = new ImageIcon("D:\\Facultate\\LaboratorJava\\lab8\\Lab8\\Imagini\\Delete.png");
+		JButton btnStergere = new JButton(icon7);
+		toolBar.add(btnStergere);
+		
+		Icon icon8 = new ImageIcon("D:\\Facultate\\LaboratorJava\\lab8\\Lab8\\Imagini\\find.jpg");
+		JButton btnCautare = new JButton(icon8);
+		toolBar.add(btnCautare);
+		
+		Icon icon9 = new ImageIcon("D:\\Facultate\\LaboratorJava\\lab8\\Lab8\\Imagini\\save.jpg");
+		JButton btnSalvare = new JButton(icon9);
+		btnSalvare.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+		}});
+		toolBar.add(btnSalvare);
+		
+		Icon icon10 = new ImageIcon("D:\\Facultate\\LaboratorJava\\lab8\\Lab8\\Imagini\\undo.jpg");
+		JButton btnRenuntare = new JButton(icon10);
+		toolBar.add(btnRenuntare);
+		
+		
+		
+		JLabel lblNewLabel = new JLabel("ID:");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel.setBounds(81, 77, 45, 13);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblNume = new JLabel("NUME:");
+		lblNume.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNume.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNume.setBounds(34, 103, 92, 13);
+		contentPane.add(lblNume);
+		
+		JLabel lblVarsta = new JLabel("VARSTA:");
+		lblVarsta.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblVarsta.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblVarsta.setBounds(44, 130, 82, 13);
+		contentPane.add(lblVarsta);
+		
+		txtID = new JTextField();
+		txtID.setFont(new Font("Tahoma", Font.BOLD, 12));
+		txtID.setBounds(148, 76, 119, 19);
+		contentPane.add(txtID);
+		txtID.setColumns(10);
+		
+		txtNUME = new JTextField();
+		txtNUME.setFont(new Font("Tahoma", Font.BOLD, 12));
+		txtNUME.setColumns(10);
+		txtNUME.setBounds(148, 102, 119, 19);
+		contentPane.add(txtNUME);
+		
+		txtVARSTA = new JTextField();
+		txtVARSTA.setFont(new Font("Tahoma", Font.BOLD, 12));
+		txtVARSTA.setColumns(10);
+		txtVARSTA.setBounds(148, 129, 119, 19);
+		contentPane.add(txtVARSTA);
+		
+		
+		
+		
+	
+	}
+}
